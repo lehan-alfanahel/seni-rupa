@@ -13,19 +13,6 @@
     <!-- Favicon -->
     <link rel="icon" type="image/jpeg" href="Logo-Tut-Wuri-Handayani-PNG-Warna.png">
     
-    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
-    <meta property="og:title" content="Unsur dan Prinsip Seni Rupa - Kelas 5">
-    <meta property="og:description" content="Game edukasi interaktif untuk siswa kelas 5 SD menjelajahi unsur dan prinsip seni rupa di sekitar kita secara menyenangkan.">
-    <meta property="og:image" content="tumi_2.png">
-    <meta property="og:url" content="https://website-anda.com">
-    <meta property="og:type" content="website">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Unsur dan Prinsip Seni Rupa - Kelas 5">
-    <meta name="twitter:description" content="Game edukasi interaktif untuk siswa kelas 5 SD menjelajahi unsur dan prinsip seni rupa di sekitar kita secara menyenangkan.">
-    <meta name="twitter:image" content="tumi_2.png">
-    
     <!-- Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     
@@ -47,7 +34,6 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            /* Mencegah highlight biru saat di-tap di perangkat mobile */
             -webkit-tap-highlight-color: transparent; 
         }
         /* Background Pattern */
@@ -63,55 +49,63 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
+        const quizData = [
+            { q: "Unsur seni rupa terkecil dan paling dasar adalah...", options: ["Titik", "Garis", "Bidang", "Bentuk"], a: "Titik" },
+            { q: "Kumpulan titik-titik yang memanjang disebut...", options: ["Bentuk", "Ruang", "Garis", "Warna"], a: "Garis" },
+            { q: "Unsur seni rupa yang memiliki panjang dan lebar (2D) disebut...", options: ["Ruang", "Bidang", "Bentuk", "Tekstur"], a: "Bidang" },
+            { q: "Unsur yang memiliki panjang, lebar, dan ruang/volume (3D) disebut...", options: ["Bentuk", "Bidang", "Titik", "Garis"], a: "Bentuk" },
+            { q: "Sifat permukaan suatu benda (kasar, halus, licin) disebut...", options: ["Warna", "Ruang", "Tekstur", "Bidang"], a: "Tekstur" },
+            { q: "Unsur yang memberikan kesan jauh-dekat pada gambar adalah...", options: ["Ruang", "Warna", "Titik", "Garis"], a: "Ruang" },
+            { q: "Campuran warna merah dan kuning akan menghasilkan warna...", options: ["Hijau", "Ungu", "Oranye", "Cokelat"], a: "Oranye" },
+            { q: "Campuran warna biru dan kuning akan menghasilkan warna...", options: ["Ungu", "Oranye", "Hijau", "Hitam"], a: "Hijau" },
+            { q: "Campuran warna merah dan biru akan menghasilkan warna...", options: ["Hijau", "Oranye", "Abu-abu", "Ungu"], a: "Ungu" },
+            { q: "Prinsip yang mengatur agar komposisi gambar tidak berat sebelah disebut...", options: ["Keseimbangan", "Irama", "Kesatuan", "Proporsi"], a: "Keseimbangan" },
+            { q: "Keseimbangan yang susunan objeknya sama persis di kanan dan kiri disebut...", options: ["Asimetris", "Simetris", "Bebas", "Pusat"], a: "Simetris" },
+            { q: "Keseimbangan dengan objek berbeda di kanan dan kiri namun tetap terasa seimbang disebut...", options: ["Simetris", "Asimetris", "Sentral", "Diagonal"], a: "Asimetris" },
+            { q: "Merah, Kuning, dan Biru termasuk dalam kelompok warna...", options: ["Sekunder", "Tersier", "Primer", "Netral"], a: "Primer" },
+            { q: "Hijau, Oranye, dan Ungu termasuk dalam kelompok warna...", options: ["Primer", "Sekunder", "Tersier", "Netral"], a: "Sekunder" },
+            { q: "Gambar sebuah bola yang bulat dan memiliki ruang di dalamnya merupakan contoh unsur...", options: ["Bidang", "Garis", "Bentuk", "Ruang"], a: "Bentuk" }
+        ];
+
         function App() {
             const [gameState, setGameState] = useState({
                 isPlaying: false,
                 studentName: '',
-                studentClass: '',
+                studentClass: '5',
                 unlockedLevel: 1,
                 currentLevel: null,
-                score: 0,
-                lives: 3,
-                badges: [],
-                savedArtwork: null
+                score: 0
             });
 
-            const [showForm, setShowForm] = useState(false);
+            // State untuk Kuis
+            const [isQuizMode, setIsQuizMode] = useState(false);
+            const [quizAnswers, setQuizAnswers] = useState({});
+            const [quizFinished, setQuizFinished] = useState(false);
+
             const [nameInput, setNameInput] = useState('');
-            const [classInput, setClassInput] = useState('5');
             const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
             
             const toastTimeoutRef = useRef(null);
 
             useEffect(() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, [gameState.currentLevel, gameState.isPlaying]);
+            }, [gameState.currentLevel, gameState.isPlaying, isQuizMode, quizFinished]);
 
             const showFeedback = (message, type = 'success') => {
                 setToast({ show: true, message, type });
-                if (toastTimeoutRef.current) {
-                    clearTimeout(toastTimeoutRef.current);
-                }
-                toastTimeoutRef.current = setTimeout(() => {
-                    setToast({ show: false, message: '', type: 'success' });
-                }, 3000);
+                if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+                toastTimeoutRef.current = setTimeout(() => setToast({ show: false, message: '', type: 'success' }), 3000);
             };
 
             const toggleFullScreen = () => {
                 if (!document.fullscreenElement) {
-                    document.documentElement.requestFullscreen().catch(err => {
-                        console.log(`Error: ${err.message}`);
-                    });
+                    document.documentElement.requestFullscreen().catch(err => console.log(`Error: ${err.message}`));
                 } else {
-                    if(document.exitFullscreen) {
-                        document.exitFullscreen();
-                    }
+                    if(document.exitFullscreen) document.exitFullscreen();
                 }
             };
 
-            const startGame = (levelId) => {
-                setGameState({ ...gameState, currentLevel: levelId });
-            };
+            const startGame = (levelId) => setGameState({ ...gameState, currentLevel: levelId });
 
             const handleStartPlaying = (e) => {
                 e.preventDefault();
@@ -119,12 +113,7 @@
                     showFeedback('Masukkan nama kamu dulu ya!', 'error');
                     return;
                 }
-                setGameState({
-                    ...gameState,
-                    isPlaying: true,
-                    studentName: nameInput,
-                    studentClass: classInput,
-                });
+                setGameState({ ...gameState, isPlaying: true, studentName: nameInput });
             };
 
             const completeLevel = (levelId, points = 10) => {
@@ -133,10 +122,125 @@
                     ...prev,
                     score: prev.score + points,
                     unlockedLevel: nextLevel > prev.unlockedLevel ? nextLevel : prev.unlockedLevel,
-                    currentLevel: null // Kembali ke peta
+                    currentLevel: null
                 }));
                 showFeedback(`Misi ${levelId} Selesai! +${points} Poin`, 'success');
             };
+
+            // ---- Komponen Quiz ----
+            const handleOptionChange = (qIndex, option) => {
+                setQuizAnswers({ ...quizAnswers, [qIndex]: option });
+            };
+
+            const submitQuiz = () => {
+                const answeredCount = Object.keys(quizAnswers).length;
+                if (answeredCount < quizData.length) {
+                    showFeedback(`Kamu baru menjawab ${answeredCount} dari ${quizData.length} soal!`, 'error');
+                    return;
+                }
+                setQuizFinished(true);
+                showFeedback('Kuis selesai diserahkan!', 'success');
+            };
+
+            const resetQuiz = () => {
+                setIsQuizMode(false);
+                setQuizFinished(false);
+                setQuizAnswers({});
+            };
+
+            const QuizComponent = () => (
+                <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-3xl mx-auto w-full mb-10">
+                    <div className="flex justify-between items-center mb-6 border-b pb-4">
+                        <h2 className="text-xl md:text-2xl font-black text-slate-800">Tes Kemampuanmu</h2>
+                        <button onClick={resetQuiz} className="text-red-500 font-bold hover:text-red-600">
+                            <i className="fa-solid fa-xmark mr-1"></i> Batal
+                        </button>
+                    </div>
+                    
+                    <div className="space-y-8">
+                        {quizData.map((item, index) => (
+                            <div key={index} className="bg-slate-50 p-4 md:p-6 rounded-xl border border-slate-200">
+                                <p className="font-bold text-slate-800 mb-4 text-sm md:text-base">
+                                    <span className="text-blue-600 mr-2">{index + 1}.</span> {item.q}
+                                </p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {item.options.map((opt, i) => (
+                                        <label key={i} className={`flex items-center p-3 rounded-lg border-2 cursor-pointer transition-colors
+                                            ${quizAnswers[index] === opt ? 'border-blue-500 bg-blue-50' : 'border-slate-200 bg-white hover:bg-slate-100'}`}>
+                                            <input 
+                                                type="radio" 
+                                                name={`q-${index}`} 
+                                                value={opt}
+                                                checked={quizAnswers[index] === opt}
+                                                onChange={() => handleOptionChange(index, opt)}
+                                                className="w-4 h-4 text-blue-600 mr-3"
+                                            />
+                                            <span className="text-sm md:text-base font-semibold text-slate-700">{opt}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button onClick={submitQuiz} className="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-colors mt-8 text-lg shadow-md">
+                        Kumpulkan Jawaban
+                    </button>
+                </div>
+            );
+
+            const QuizReviewComponent = () => {
+                let correctCount = 0;
+                quizData.forEach((item, index) => {
+                    if (quizAnswers[index] === item.a) correctCount++;
+                });
+                const totalScore = Math.round((correctCount / quizData.length) * 100);
+
+                return (
+                    <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-3xl mx-auto w-full mb-10">
+                        <div className="text-center mb-8 border-b pb-6">
+                            <h2 className="text-2xl md:text-3xl font-black text-slate-800 mb-2">Hasil Tes Kemampuan</h2>
+                            <div className={`inline-flex items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full border-8 mb-4 mt-4
+                                ${totalScore >= 80 ? 'border-green-400 text-green-500' : totalScore >= 60 ? 'border-yellow-400 text-yellow-500' : 'border-red-400 text-red-500'}`}>
+                                <span className="text-4xl md:text-5xl font-black">{totalScore}</span>
+                            </div>
+                            <p className="text-slate-600 font-bold text-lg">Benar {correctCount} dari {quizData.length} soal</p>
+                        </div>
+
+                        <h3 className="font-black text-lg text-slate-800 mb-4">Review Jawaban:</h3>
+                        <div className="space-y-4">
+                            {quizData.map((item, index) => {
+                                const userAnswer = quizAnswers[index];
+                                const isCorrect = userAnswer === item.a;
+
+                                return (
+                                    <div key={index} className={`p-4 rounded-xl border-l-4 ${isCorrect ? 'bg-green-50 border-green-500' : 'bg-red-50 border-red-500'}`}>
+                                        <p className="font-bold text-slate-800 mb-2 text-sm md:text-base">
+                                            {index + 1}. {item.q}
+                                        </p>
+                                        <div className="text-sm md:text-base space-y-1">
+                                            <p className={`${isCorrect ? 'text-green-700 font-bold' : 'text-red-600 line-through'}`}>
+                                                <i className={`fa-solid mr-2 ${isCorrect ? 'fa-check' : 'fa-xmark'}`}></i> 
+                                                Jawabanmu: {userAnswer || '(Tidak dijawab)'}
+                                            </p>
+                                            {!isCorrect && (
+                                                <p className="text-green-700 font-bold">
+                                                    <i className="fa-solid fa-check mr-2"></i> Kunci Jawaban: {item.a}
+                                                </p>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        <button onClick={resetQuiz} className="w-full bg-slate-800 text-white font-bold py-4 rounded-xl hover:bg-slate-900 transition-colors mt-8 text-base md:text-lg shadow-md">
+                            Kembali ke Halaman Utama
+                        </button>
+                    </div>
+                );
+            };
+            // ------------------------
 
             const levels = [
                 { id: 1, title: 'Misi 1', subtitle: 'Kenali Unsur', icon: 'fa-solid fa-book-open' },
@@ -233,7 +337,6 @@
                             ))}
                         </div>
                         
-                        {/* TOMBOL SELALU AKTIF */}
                         <button onClick={() => completeLevel(2, 20)}
                             className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
                             Lanjutkan Misi
@@ -305,7 +408,6 @@
                             })}
                         </div>
                         
-                        {/* TOMBOL SELALU AKTIF */}
                         <button onClick={() => completeLevel(3, 15)} 
                             className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
                             Lanjutkan Misi
@@ -364,7 +466,6 @@
                             </div>
                         )}
 
-                        {/* TOMBOL SELALU AKTIF */}
                         <button onClick={() => completeLevel(4, 20)}
                             className="w-full mt-8 font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
                             Lanjutkan Misi
@@ -399,7 +500,6 @@
                             )}
                         </div>
 
-                        {/* TOMBOL SELALU AKTIF */}
                         <button onClick={() => completeLevel(5, 10)}
                             className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
                             Lanjutkan Misi
@@ -444,7 +544,6 @@
                             </div>
                         </div>
 
-                        {/* TOMBOL SELALU AKTIF */}
                         <button onClick={() => completeLevel(6, 15)}
                             className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
                             Lanjutkan Misi
@@ -477,9 +576,7 @@
                             else result = '#475569'; // Abu-abu
                             
                             setMixedColor(result);
-                            setTimeout(() => {
-                                showFeedback('Wah, warna baru tercipta!', 'success');
-                            }, 500);
+                            setTimeout(() => showFeedback('Wah, warna baru tercipta!', 'success'), 500);
                         }
                     }
                 };
@@ -520,7 +617,6 @@
                             </button>
                         )}
 
-                        {/* TOMBOL SELALU AKTIF */}
                         <button onClick={() => completeLevel(7, 20)}
                             className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
                             Lanjutkan Misi
@@ -532,9 +628,7 @@
             const Level8 = () => {
                 const [artElements, setArtElements] = useState([]);
                 
-                const addElement = (emoji) => {
-                    setArtElements([...artElements, emoji]);
-                };
+                const addElement = (emoji) => setArtElements([...artElements, emoji]);
 
                 return (
                     <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-2xl mx-auto w-full text-center">
@@ -563,7 +657,6 @@
                             </button>
                         )}
 
-                        {/* TOMBOL SELALU AKTIF */}
                         <button onClick={() => { completeLevel(8, 50); showFeedback('Selamat! Kamu menyelesaikan semua misi!', 'success') }}
                             className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-green-600 text-white hover:bg-green-700">
                             Selesaikan Petualangan
@@ -573,6 +666,23 @@
             };
 
             const renderContent = () => {
+                // Logika Halaman Kuis
+                if (isQuizMode) {
+                    if (quizFinished) {
+                        return (
+                            <div className="mt-6 md:mt-10 max-w-4xl mx-auto">
+                                <QuizReviewComponent />
+                            </div>
+                        );
+                    }
+                    return (
+                        <div className="mt-6 md:mt-10 max-w-4xl mx-auto">
+                            <QuizComponent />
+                        </div>
+                    );
+                }
+
+                // Logika Halaman Cover
                 if (!gameState.isPlaying) {
                     return (
                         <div className="max-w-md mx-auto bg-white p-6 md:p-8 rounded-3xl shadow-sm text-center mt-10 md:mt-20">
@@ -588,16 +698,22 @@
                                     placeholder="Siapa namamu?" 
                                     value={nameInput} 
                                     onChange={(e) => setNameInput(e.target.value)}
-                                    className="w-full bg-slate-50 border-2 border-slate-200 text-slate-800 px-4 py-3 rounded-xl mb-6 font-bold text-center focus:border-blue-500 focus:bg-white outline-none transition-colors"
+                                    className="w-full bg-slate-50 border-2 border-slate-200 text-slate-800 px-4 py-3 rounded-xl mb-4 font-bold text-center focus:border-blue-500 focus:bg-white outline-none transition-colors"
                                 />
-                                <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors active:scale-95 shadow-md">
+                                
+                                <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors active:scale-95 shadow-md mb-3">
                                     Mulai Bermain
+                                </button>
+                                
+                                <button type="button" onClick={() => setIsQuizMode(true)} className="w-full bg-emerald-500 text-white font-bold py-3 rounded-xl hover:bg-emerald-600 transition-colors active:scale-95 shadow-md flex justify-center items-center gap-2">
+                                    <i className="fa-solid fa-file-signature"></i> Tes Kemampuanmu
                                 </button>
                             </form>
                         </div>
                     );
                 }
 
+                // Logika Halaman Misi yang Berjalan
                 if (gameState.currentLevel !== null) {
                     return (
                         <div className="mt-6 md:mt-10">
@@ -616,6 +732,7 @@
                     );
                 }
 
+                // Logika Menu Map Misi
                 return (
                     <div className="max-w-4xl mx-auto mt-6 md:mt-10">
                         <div className="text-center mb-10">
@@ -672,7 +789,7 @@
                             <h1 className="font-bold text-slate-800 text-base hidden md:block tracking-tight">Seni Rupa Kelas 5</h1>
                         </div>
                         
-                        {gameState.isPlaying && (
+                        {gameState.isPlaying && !isQuizMode && (
                             <div className="flex items-center gap-3 md:gap-6">
                                 <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
                                     <span className="text-slate-500 text-xs md:text-sm font-semibold">
