@@ -3,9 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unsur dan Prinsip Seni Rupa - Kelas 5</title>
-    <meta name="description" content="Game edukasi interaktif untuk siswa kelas 5 SD menjelajahi unsur dan prinsip seni rupa di sekitar kita.">
-    <meta property="og:image" content="tumi.jpg">
+    
+    <!-- Meta SEO & Keywords -->
+    <title>Unsur dan Prinsip Seni Rupa - Kelas 5 SD Negeri 2 Sendang Ayu</title>
+    <meta name="description" content="Game edukasi interaktif untuk siswa kelas 5 SD menjelajahi unsur dan prinsip seni rupa di sekitar kita secara menyenangkan.">
+    <meta name="keywords" content="seni rupa, unsur seni rupa, prinsip seni rupa, kelas 5, game edukasi, media pembelajaran interaktif, sekolah dasar">
+    <meta name="author" content="Pak Lehan">
+    
+    <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+    <meta property="og:title" content="Unsur dan Prinsip Seni Rupa - Kelas 5">
+    <meta property="og:description" content="Game edukasi interaktif untuk siswa kelas 5 SD menjelajahi unsur dan prinsip seni rupa di sekitar kita secara menyenangkan.">
+    <meta property="og:image" content="tumi_2.jpg">
+    <meta property="og:url" content="https://website-anda.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Unsur dan Prinsip Seni Rupa - Kelas 5">
+    <meta name="twitter:description" content="Game edukasi interaktif untuk siswa kelas 5 SD menjelajahi unsur dan prinsip seni rupa di sekitar kita secara menyenangkan.">
+    <meta name="twitter:image" content="tumi_2.jpg">
     
     <!-- Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -59,6 +75,9 @@
             const [nameInput, setNameInput] = useState('');
             const [classInput, setClassInput] = useState('5');
             const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+            
+            // Ref untuk memastikan notifikasi hilang pas 3 detik tanpa bentrok
+            const toastTimeoutRef = useRef(null);
 
             useEffect(() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -66,7 +85,14 @@
 
             const showFeedback = (message, type = 'success') => {
                 setToast({ show: true, message, type });
-                setTimeout(() => {
+                
+                // Bersihkan timer lama jika tombol diklik berulang kali
+                if (toastTimeoutRef.current) {
+                    clearTimeout(toastTimeoutRef.current);
+                }
+                
+                // Set timer baru tepat 3 detik (3000 milidetik)
+                toastTimeoutRef.current = setTimeout(() => {
                     setToast({ show: false, message: '', type: 'success' });
                 }, 3000);
             };
@@ -289,6 +315,8 @@
 
             const Level4 = () => {
                 const [currentQ, setCurrentQ] = useState(0);
+                const [isCompleted, setIsCompleted] = useState(false);
+                
                 const questions = [
                     { image: '🪨', question: 'Unsur seni rupa apa yang paling dominan pada batu kasar ini?', options: ['Tekstur', 'Warna', 'Titik', 'Ruang'], answer: 'Tekstur' },
                     { image: '🪟', question: 'Permukaan datar pada jendela ini merupakan contoh dari...', options: ['Warna', 'Bidang', 'Tekstur', 'Titik'], answer: 'Bidang' },
@@ -301,7 +329,7 @@
                         if (currentQ < questions.length - 1) {
                             setTimeout(() => setCurrentQ(c => c + 1), 1000);
                         } else {
-                            setTimeout(() => completeLevel(4, 20), 1000);
+                            setTimeout(() => setIsCompleted(true), 1000);
                         }
                     } else {
                         showFeedback('Salah, coba ingat lagi!', 'error');
@@ -313,17 +341,32 @@
                         <h2 className="text-lg font-bold text-slate-800 mb-2">Misi 4 : Tebak Gambar</h2>
                         <p className="text-slate-600 mb-8">Pilih unsur yang paling menonjol.</p>
                         
-                        <div className="text-9xl mb-8">{questions[currentQ].image}</div>
-                        <p className="font-bold text-slate-700 mb-6">{questions[currentQ].question}</p>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                            {questions[currentQ].options.map(opt => (
-                                <button key={opt} onClick={() => handleAnswer(opt)}
-                                    className="bg-blue-50 text-blue-700 border border-blue-200 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition-colors">
-                                    {opt}
-                                </button>
-                            ))}
-                        </div>
+                        {!isCompleted ? (
+                            <>
+                                <div className="text-9xl mb-8">{questions[currentQ].image}</div>
+                                <p className="font-bold text-slate-700 mb-6">{questions[currentQ].question}</p>
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    {questions[currentQ].options.map(opt => (
+                                        <button key={opt} onClick={() => handleAnswer(opt)}
+                                            className="bg-blue-50 text-blue-700 border border-blue-200 py-3 rounded-xl font-bold hover:bg-blue-600 hover:text-white transition-colors">
+                                            {opt}
+                                        </button>
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <div className="text-center animate-bounce mb-6 mt-10">
+                                <span className="bg-green-100 text-green-700 font-bold px-6 py-4 text-xl rounded-full border border-green-300">
+                                    Hebat! Semua tebakan benar! 🎉
+                                </span>
+                            </div>
+                        )}
+
+                        <button onClick={() => completeLevel(4, 20)} disabled={!isCompleted}
+                            className={`w-full mt-8 font-bold py-3 rounded-xl transition-colors ${isCompleted ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
+                            {isCompleted ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
+                        </button>
                     </div>
                 );
             };
@@ -398,7 +441,7 @@
 
                         <button onClick={() => completeLevel(6, 15)} disabled={selected !== 'b'}
                             className={`w-full font-bold py-3 rounded-xl transition-colors ${selected === 'b' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            Lanjutkan Misi
+                            {selected === 'b' ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
                         </button>
                     </div>
                 );
@@ -467,7 +510,7 @@
                             <button onClick={reset} className="flex-1 bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-300">Ulangi</button>
                             <button onClick={() => completeLevel(7, 20)} disabled={!mixedColor}
                                 className={`flex-1 font-bold py-3 rounded-xl transition-colors ${mixedColor ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}>
-                                Lanjutkan Misi
+                                {mixedColor ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
                             </button>
                         </div>
                     </div>
@@ -493,7 +536,6 @@
                     if (!ctx || tool === 'brush') return;
                     const rect = canvasRef.current.getBoundingClientRect();
                     
-                    // Normalisasi ukuran klik berdasarkan skala tampilan canvas
                     const scaleX = canvasRef.current.width / rect.width;
                     const scaleY = canvasRef.current.height / rect.height;
                     
@@ -678,7 +720,7 @@
                             <div className="max-w-md w-full bg-white p-8 rounded-2xl shadow-xl z-10 relative">
                                 <div className="flex justify-center mb-6">
                                     <div className="w-24 h-24 rounded-full border-4 border-yellow-400 overflow-hidden shadow-lg bg-blue-100 flex items-center justify-center">
-                                        <span className="text-5xl">👨‍🏫</span>
+                                        <img src="lehan.png" alt="Logo" className="w-full h-full object-cover" />
                                     </div>
                                 </div>
                                 
@@ -694,7 +736,7 @@
                                     </button>
                                 ) : (
                                     <form onSubmit={handleStartPlaying} className="animate-fade-in">
-                                        <h3 className="text-center font-bold text-slate-700 mb-4">Isi Data Diri Dulu Yuk!</h3>
+                                        <h3 className="text-center font-bold text-slate-700 mb-4">Isi Data Diri Dulu Coy</h3>
                                         <div className="mb-4">
                                             <label className="block text-sm font-bold text-slate-700 mb-1">Nama Lengkap</label>
                                             <input type="text" value={nameInput} onChange={(e) => setNameInput(e.target.value)}
@@ -776,7 +818,7 @@
                         </div>
                     )}
                     <footer className="bg-slate-900 text-slate-400 text-center py-4 text-sm font-medium mt-auto">
-                        © 2026 - Created By Pak LEhan
+                        Copyright © 2026 - Created By Pak Lehan
                     </footer>
                 </div>
             );
