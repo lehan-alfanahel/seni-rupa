@@ -203,8 +203,6 @@
                     }
                 };
 
-                const isCompleted = matches === items.length;
-
                 return (
                     <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-4xl mx-auto w-full">
                         <h2 className="text-lg md:text-xl font-bold text-slate-800 mb-2">Misi 2 : Cari Unsur Rupa</h2>
@@ -235,9 +233,10 @@
                             ))}
                         </div>
                         
-                        <button onClick={() => completeLevel(2, 20)} disabled={!isCompleted}
-                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${isCompleted ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            {isCompleted ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
+                        {/* TOMBOL SELALU AKTIF */}
+                        <button onClick={() => completeLevel(2, 20)}
+                            className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
+                            Lanjutkan Misi
                         </button>
                     </div>
                 );
@@ -283,8 +282,6 @@
                     }
                 };
 
-                const isCompleted = matchedPairs.length === 4;
-
                 return (
                     <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-3xl mx-auto w-full">
                         <h2 className="text-lg md:text-xl font-bold text-slate-800 mb-2">Misi 3 : Cari Pasangan</h2>
@@ -308,9 +305,10 @@
                             })}
                         </div>
                         
-                        <button onClick={() => completeLevel(3, 15)} disabled={!isCompleted}
-                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${isCompleted ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            {isCompleted ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
+                        {/* TOMBOL SELALU AKTIF */}
+                        <button onClick={() => completeLevel(3, 15)} 
+                            className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
+                            Lanjutkan Misi
                         </button>
                     </div>
                 );
@@ -366,9 +364,10 @@
                             </div>
                         )}
 
-                        <button onClick={() => completeLevel(4, 20)} disabled={!isCompleted}
-                            className={`w-full mt-8 font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${isCompleted ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            {isCompleted ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
+                        {/* TOMBOL SELALU AKTIF */}
+                        <button onClick={() => completeLevel(4, 20)}
+                            className="w-full mt-8 font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
+                            Lanjutkan Misi
                         </button>
                     </div>
                 );
@@ -400,9 +399,10 @@
                             )}
                         </div>
 
-                        <button onClick={() => completeLevel(5, 10)} disabled={!isBuilt}
-                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${isBuilt ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            {isBuilt ? 'Lanjutkan Misi' : 'Bangun Rumah Dulu'}
+                        {/* TOMBOL SELALU AKTIF */}
+                        <button onClick={() => completeLevel(5, 10)}
+                            className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
+                            Lanjutkan Misi
                         </button>
                     </div>
                 );
@@ -444,9 +444,10 @@
                             </div>
                         </div>
 
-                        <button onClick={() => completeLevel(6, 15)} disabled={selected !== 'b'}
-                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${selected === 'b' ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            {selected === 'b' ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
+                        {/* TOMBOL SELALU AKTIF */}
+                        <button onClick={() => completeLevel(6, 15)}
+                            className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
+                            Lanjutkan Misi
                         </button>
                     </div>
                 );
@@ -519,9 +520,10 @@
                             </button>
                         )}
 
-                        <button onClick={() => completeLevel(7, 20)} disabled={!mixedColor}
-                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${mixedColor ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            {mixedColor ? 'Lanjutkan Misi' : 'Campur Warna Dulu'}
+                        {/* TOMBOL SELALU AKTIF */}
+                        <button onClick={() => completeLevel(7, 20)}
+                            className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-blue-600 text-white hover:bg-blue-700">
+                            Lanjutkan Misi
                         </button>
                     </div>
                 );
@@ -533,8 +535,6 @@
                 const addElement = (emoji) => {
                     setArtElements([...artElements, emoji]);
                 };
-
-                const isCompleted = artElements.length >= 4;
 
                 return (
                     <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-2xl mx-auto w-full text-center">
@@ -563,9 +563,10 @@
                             </button>
                         )}
 
-                        <button onClick={() => { completeLevel(8, 50); showFeedback('Selamat! Kamu menyelesaikan semua misi!', 'success') }} disabled={!isCompleted}
-                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${isCompleted ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
-                            {isCompleted ? 'Selesaikan Petualangan' : `Tambahkan ${Math.max(0, 4 - artElements.length)} Elemen Lagi`}
+                        {/* TOMBOL SELALU AKTIF */}
+                        <button onClick={() => { completeLevel(8, 50); showFeedback('Selamat! Kamu menyelesaikan semua misi!', 'success') }}
+                            className="w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base bg-green-600 text-white hover:bg-green-700">
+                            Selesaikan Petualangan
                         </button>
                     </div>
                 );
