@@ -125,7 +125,6 @@
                     studentName: nameInput,
                     studentClass: classInput,
                 });
-                setShowForm(false);
             };
 
             const completeLevel = (levelId, points = 10) => {
@@ -134,7 +133,7 @@
                     ...prev,
                     score: prev.score + points,
                     unlockedLevel: nextLevel > prev.unlockedLevel ? nextLevel : prev.unlockedLevel,
-                    currentLevel: null
+                    currentLevel: null // Kembali ke peta
                 }));
                 showFeedback(`Misi ${levelId} Selesai! +${points} Poin`, 'success');
             };
@@ -381,16 +380,16 @@
                 return (
                     <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-2xl mx-auto w-full text-center">
                         <h2 className="text-lg md:text-xl font-bold text-slate-800 mb-2">Misi 5 : Susun Seni</h2>
-                        <p className="text-sm md:text-base text-slate-600 mb-6">Satukan bentuk-bentuk geometris ini menjadi sebuah rumah!</p>
+                        <p className="text-sm md:text-base text-slate-600 mb-6">Satukan bentuk-bentuk geometris ini menjadi sebuah rumah! (Klik salah satu bangun ruang)</p>
                         
                         <div className="h-56 md:h-64 bg-blue-50 border-2 border-dashed border-blue-200 rounded-xl relative overflow-hidden mb-6 flex items-center justify-center">
                             {!isBuilt ? (
                                 <div className="flex gap-4 items-end">
-                                   <div className="w-0 h-0 border-l-[30px] border-l-transparent border-b-[50px] border-b-red-400 border-r-[30px] border-r-transparent md:border-l-[40px] md:border-b-[60px] md:border-r-[40px] animate-pulse cursor-pointer" onClick={() => setIsBuilt(true)}></div>
-                                   <div className="w-16 h-16 md:w-20 md:h-20 bg-yellow-400 animate-pulse cursor-pointer" onClick={() => setIsBuilt(true)}></div>
+                                   <div className="w-0 h-0 border-l-[30px] border-l-transparent border-b-[50px] border-b-red-400 border-r-[30px] border-r-transparent md:border-l-[40px] md:border-b-[60px] md:border-r-[40px] animate-pulse cursor-pointer hover:scale-110 transition-transform" onClick={() => setIsBuilt(true)}></div>
+                                   <div className="w-16 h-16 md:w-20 md:h-20 bg-yellow-400 animate-pulse cursor-pointer hover:scale-110 transition-transform" onClick={() => setIsBuilt(true)}></div>
                                 </div>
                             ) : (
-                                <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2">
+                                <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
                                     <div className="w-0 h-0 border-l-[50px] border-l-transparent border-b-[60px] border-b-red-500 border-r-[50px] border-r-transparent md:border-l-[60px] md:border-b-[80px] md:border-r-[60px] mx-auto"></div>
                                     <div className="w-[100px] h-[80px] md:w-[120px] md:h-[100px] bg-yellow-400 relative border-t-0 mx-auto">
                                         <div className="w-6 h-10 md:w-8 md:h-12 bg-amber-700 absolute bottom-0 left-1/2 -translate-x-1/2 rounded-t-md"></div>
@@ -414,7 +413,7 @@
                 const handleSelect = (ans) => {
                     setSelected(ans);
                     if (ans === 'b') {
-                        showFeedback('Benar! Komposisi B lebih seimbang.', 'success');
+                        showFeedback('Benar! Komposisi B lebih seimbang secara asimetris.', 'success');
                     } else {
                         showFeedback('Kurang tepat, coba lihat berat visualnya.', 'error');
                     }
@@ -423,17 +422,17 @@
                 return (
                     <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-3xl mx-auto w-full text-center">
                         <h2 className="text-lg md:text-xl font-bold text-slate-800 mb-2">Misi 6 : Prinsip Keseimbangan</h2>
-                        <p className="text-sm md:text-base text-slate-600 mb-6">Pilih gambar mana yang memiliki Keseimbangan Asimetris yang baik.</p>
+                        <p className="text-sm md:text-base text-slate-600 mb-6">Pilih gambar mana yang memiliki <b>Keseimbangan Asimetris</b> yang baik.</p>
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
-                            <div onClick={() => handleSelect('a')} className={`p-4 border-2 rounded-xl cursor-pointer bg-slate-50 transition-colors ${selected === 'a' ? 'border-red-400' : 'border-slate-200'}`}>
+                            <div onClick={() => handleSelect('a')} className={`p-4 border-2 rounded-xl cursor-pointer bg-slate-50 transition-colors ${selected === 'a' ? 'border-red-400' : 'border-slate-200 hover:bg-slate-100'}`}>
                                 <h3 className="font-bold mb-4 text-sm md:text-base">Gambar A</h3>
                                 <div className="h-24 md:h-32 flex items-center justify-start gap-2 pl-4">
                                    <div className="w-12 h-12 md:w-16 md:h-16 bg-slate-800 rounded-full"></div>
                                    <div className="w-3 h-3 md:w-4 md:h-4 bg-slate-400 rounded-full"></div>
                                 </div>
                             </div>
-                            <div onClick={() => handleSelect('b')} className={`p-4 border-2 rounded-xl cursor-pointer bg-slate-50 transition-colors ${selected === 'b' ? 'border-green-400' : 'border-slate-200'}`}>
+                            <div onClick={() => handleSelect('b')} className={`p-4 border-2 rounded-xl cursor-pointer bg-slate-50 transition-colors ${selected === 'b' ? 'border-green-400 bg-green-50' : 'border-slate-200 hover:bg-slate-100'}`}>
                                 <h3 className="font-bold mb-4 text-sm md:text-base">Gambar B</h3>
                                 <div className="h-24 md:h-32 flex items-center justify-between px-4 md:px-8">
                                    <div className="w-12 h-12 md:w-16 md:h-16 bg-slate-800 rounded-full"></div>
@@ -479,7 +478,7 @@
                             setMixedColor(result);
                             setTimeout(() => {
                                 showFeedback('Wah, warna baru tercipta!', 'success');
-                            }, 1500);
+                            }, 500);
                         }
                     }
                 };
@@ -509,371 +508,198 @@
                                 {!slots[1] && <span className="text-slate-300 font-bold text-sm md:text-base">2</span>}
                             </div>
                             <span className="text-xl md:text-2xl font-bold text-slate-400">=</span>
-                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-2xl border-2 md:border-4 border-white shadow-lg transition-colors duration-1000 ease-in-out" style={{backgroundColor: mixedColor || '#f8fafc'}}></div>
+                            <div className="w-16 h-16 md:w-24 md:h-24 rounded-full border-4 border-white shadow-lg flex items-center justify-center transition-all duration-700" style={{backgroundColor: mixedColor || 'transparent', transform: mixedColor ? 'scale(1.1)' : 'scale(1)'}}>
+                                {!mixedColor && <i className="fa-solid fa-question text-slate-300 text-2xl"></i>}
+                            </div>
                         </div>
-                        
-                        <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-                            <button onClick={reset} className="w-full md:flex-1 bg-slate-200 text-slate-700 font-bold py-3 rounded-xl hover:bg-slate-300 text-sm md:text-base">Ulangi</button>
-                            <button onClick={() => completeLevel(7, 20)} disabled={!mixedColor}
-                                className={`w-full md:flex-1 font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${mixedColor ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-100 text-slate-300 cursor-not-allowed'}`}>
-                                {mixedColor ? 'Lanjutkan Misi' : 'Selesaikan Misi Dulu'}
+
+                        {mixedColor && (
+                            <button onClick={reset} className="text-slate-500 underline text-sm mb-6 block mx-auto hover:text-slate-700">
+                                <i className="fa-solid fa-rotate-right mr-1"></i> Ulangi Campuran
                             </button>
-                        </div>
+                        )}
+
+                        <button onClick={() => completeLevel(7, 20)} disabled={!mixedColor}
+                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${mixedColor ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
+                            {mixedColor ? 'Lanjutkan Misi' : 'Campur Warna Dulu'}
+                        </button>
                     </div>
                 );
             };
 
             const Level8 = () => {
-                const canvasRef = useRef(null);
-                const containerRef = useRef(null);
-                const [ctx, setCtx] = useState(null);
-                const [color, setColor] = useState('#000000');
-                const [tool, setTool] = useState('brush'); 
+                const [artElements, setArtElements] = useState([]);
                 
-                useEffect(() => {
-                    if (canvasRef.current) {
-                        const context = canvasRef.current.getContext('2d');
-                        context.fillStyle = '#ffffff';
-                        context.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                        setCtx(context);
-                    }
-                }, []);
-
-                const placeStamp = (e) => {
-                    if (!ctx || tool === 'brush') return;
-                    
-                    // Support touch and mouse events
-                    const clientX = e.clientX || (e.touches && e.touches[0].clientX);
-                    const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-                    
-                    if (!clientX || !clientY) return;
-
-                    const rect = canvasRef.current.getBoundingClientRect();
-                    const scaleX = canvasRef.current.width / rect.width;
-                    const scaleY = canvasRef.current.height / rect.height;
-                    
-                    const x = (clientX - rect.left) * scaleX;
-                    const y = (clientY - rect.top) * scaleY;
-                    
-                    ctx.fillStyle = color;
-                    ctx.beginPath();
-                    
-                    const size = window.innerWidth < 768 ? 20 : 30; // Ukuran stempel lebih kecil di mobile
-
-                    if (tool === 'circle') {
-                        ctx.arc(x, y, size, 0, Math.PI * 2);
-                        ctx.fill();
-                    } else if (tool === 'square') {
-                        ctx.fillRect(x - size, y - size, size * 2, size * 2);
-                    } else if (tool === 'triangle') {
-                        ctx.moveTo(x, y - size);
-                        ctx.lineTo(x + size, y + size);
-                        ctx.lineTo(x - size, y + size);
-                        ctx.closePath();
-                        ctx.fill();
-                    } else if (tool === 'tree') {
-                        ctx.fillStyle = '#8B4513';
-                        ctx.fillRect(x - (size/3), y, (size*0.6), (size*1.3));
-                        ctx.fillStyle = color; 
-                        ctx.arc(x, y - (size/3), size*0.8, 0, Math.PI * 2);
-                        ctx.fill();
-                    } else if (tool === 'house') {
-                        ctx.fillStyle = color;
-                        ctx.fillRect(x - (size*0.6), y - (size/3), size*1.3, size);
-                        ctx.fillStyle = '#ef4444'; 
-                        ctx.moveTo(x - size*0.8, y - (size/3));
-                        ctx.lineTo(x, y - size*1.1);
-                        ctx.lineTo(x + size*0.8, y - (size/3));
-                        ctx.closePath();
-                        ctx.fill();
-                    }
+                const addElement = (emoji) => {
+                    setArtElements([...artElements, emoji]);
                 };
 
-                const handleClear = () => {
-                    if (ctx) {
-                        ctx.fillStyle = '#ffffff';
-                        ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-                    }
-                };
-
-                const handleFinish = () => {
-                    const dataUrl = canvasRef.current.toDataURL("image/jpeg", 1.0);
-                    setGameState({ ...gameState, currentLevel: 9, savedArtwork: dataUrl });
-                    showFeedback('Karya berhasil disimpan!', 'success');
-                };
+                const isCompleted = artElements.length >= 4;
 
                 return (
-                    <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-5xl mx-auto w-full">
-                        <div className="flex flex-col md:flex-row gap-4 md:gap-6">
-                            <div className="flex-1 order-2 md:order-1">
-                                <div className="flex justify-between items-center mb-4">
-                                    <h2 className="text-lg md:text-xl font-bold text-slate-800">Misi 8 : Studio Seni</h2>
-                                    <button onClick={handleClear} className="text-xs md:text-sm bg-red-50 text-red-600 px-3 py-1.5 md:py-1 rounded-lg hover:bg-red-100 flex items-center">
-                                        <i className="fa-solid fa-eraser mr-2"></i> Hapus
-                                    </button>
-                                </div>
-                                
-                                <div ref={containerRef} className="border-2 md:border-4 border-slate-200 rounded-xl overflow-hidden bg-slate-50 cursor-crosshair w-full relative" style={{ aspectRatio: '16/9' }}>
-                                    <canvas 
-                                        ref={canvasRef} 
-                                        width={800} 
-                                        height={450} 
-                                        onClick={placeStamp} 
-                                        onTouchEnd={(e) => {
-                                            e.preventDefault(); // Mencegah scrolling saat tap kanvas di mobile
-                                            placeStamp(e);
-                                        }}
-                                        className="absolute top-0 left-0 w-full h-full block touch-none" 
-                                    />
-                                </div>
-                                <p className="text-[10px] md:text-xs text-slate-500 mt-2 text-center">Pilih alat stempel lalu tap/klik pada kanvas.</p>
+                    <div className="bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-slate-100 max-w-2xl mx-auto w-full text-center">
+                        <h2 className="text-lg md:text-xl font-bold text-slate-800 mb-2">Misi 8 : Studio Seni</h2>
+                        <p className="text-sm md:text-base text-slate-600 mb-6">Berkreasilah! Tambahkan minimal 4 elemen ke dalam kanvas.</p>
+                        
+                        <div className="flex justify-center gap-2 mb-6">
+                            <button onClick={() => addElement('🔴')} className="text-2xl md:text-3xl p-3 bg-slate-100 rounded-xl hover:bg-slate-200 hover:scale-110 transition-transform">🔴</button>
+                            <button onClick={() => addElement('🟦')} className="text-2xl md:text-3xl p-3 bg-slate-100 rounded-xl hover:bg-slate-200 hover:scale-110 transition-transform">🟦</button>
+                            <button onClick={() => addElement('⭐')} className="text-2xl md:text-3xl p-3 bg-slate-100 rounded-xl hover:bg-slate-200 hover:scale-110 transition-transform">⭐</button>
+                            <button onClick={() => addElement('〰️')} className="text-2xl md:text-3xl p-3 bg-slate-100 rounded-xl hover:bg-slate-200 hover:scale-110 transition-transform">〰️</button>
+                        </div>
+
+                        <div className="h-48 md:h-64 bg-slate-50 border-4 border-slate-200 rounded-xl mb-6 p-4 flex flex-wrap content-start gap-2 shadow-inner relative overflow-hidden">
+                            {artElements.map((el, idx) => (
+                                <span key={idx} className="text-3xl md:text-4xl animate-bounce">{el}</span>
+                            ))}
+                            {artElements.length === 0 && (
+                                <span className="absolute inset-0 flex items-center justify-center text-slate-400 font-bold">Kanvas masih kosong</span>
+                            )}
+                        </div>
+
+                        {artElements.length > 0 && (
+                            <button onClick={() => setArtElements([])} className="text-slate-500 underline text-sm mb-6 block mx-auto hover:text-slate-700">
+                                Bersihkan Kanvas
+                            </button>
+                        )}
+
+                        <button onClick={() => { completeLevel(8, 50); showFeedback('Selamat! Kamu menyelesaikan semua misi!', 'success') }} disabled={!isCompleted}
+                            className={`w-full font-bold py-3 rounded-xl transition-colors text-sm md:text-base ${isCompleted ? 'bg-green-600 text-white hover:bg-green-700' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}>
+                            {isCompleted ? 'Selesaikan Petualangan' : `Tambahkan ${Math.max(0, 4 - artElements.length)} Elemen Lagi`}
+                        </button>
+                    </div>
+                );
+            };
+
+            const renderContent = () => {
+                if (!gameState.isPlaying) {
+                    return (
+                        <div className="max-w-md mx-auto bg-white p-6 md:p-8 rounded-3xl shadow-sm text-center mt-10 md:mt-20">
+                            <div className="w-20 h-20 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                                <i className="fa-solid fa-palette"></i>
                             </div>
-
-                            <div className="w-full md:w-64 flex flex-col gap-4 md:gap-6 order-1 md:order-2">
-                                <div className="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-200">
-                                    <h3 className="text-xs md:text-sm font-bold text-slate-700 mb-2 md:mb-3">Warna</h3>
-                                    <div className="flex flex-wrap gap-1.5 md:gap-2">
-                                        {['#ef4444', '#facc15', '#3b82f6', '#22c55e', '#f97316', '#9333ea', '#8b4513', '#000000', '#ffffff'].map(c => (
-                                            <button key={c} onClick={() => setColor(c)} className={`w-6 h-6 md:w-8 md:h-8 rounded-full border-2 ${color === c ? 'border-slate-800 scale-110' : 'border-slate-200'}`} style={{backgroundColor: c}}></button>
-                                        ))}
-                                    </div>
-                                </div>
-
-                                <div className="bg-slate-50 p-3 md:p-4 rounded-xl border border-slate-200">
-                                    <h3 className="text-xs md:text-sm font-bold text-slate-700 mb-2 md:mb-3">Alat Stempel</h3>
-                                    <div className="grid grid-cols-5 md:grid-cols-2 gap-1.5 md:gap-2">
-                                        <button onClick={() => setTool('circle')} className={`p-1.5 md:p-2 rounded-lg flex flex-col items-center border ${tool === 'circle' ? 'bg-blue-100 border-blue-400' : 'bg-white border-slate-200'}`}>
-                                            <span className="text-base md:text-lg mb-0.5 md:mb-1">⭕</span> <span className="text-[8px] md:text-[10px] hidden md:block">Lingkaran</span>
-                                        </button>
-                                        <button onClick={() => setTool('square')} className={`p-1.5 md:p-2 rounded-lg flex flex-col items-center border ${tool === 'square' ? 'bg-blue-100 border-blue-400' : 'bg-white border-slate-200'}`}>
-                                            <span className="text-base md:text-lg mb-0.5 md:mb-1">⬛</span> <span className="text-[8px] md:text-[10px] hidden md:block">Persegi</span>
-                                        </button>
-                                        <button onClick={() => setTool('triangle')} className={`p-1.5 md:p-2 rounded-lg flex flex-col items-center border ${tool === 'triangle' ? 'bg-blue-100 border-blue-400' : 'bg-white border-slate-200'}`}>
-                                            <span className="text-base md:text-lg mb-0.5 md:mb-1">🔺</span> <span className="text-[8px] md:text-[10px] hidden md:block">Segitiga</span>
-                                        </button>
-                                        <button onClick={() => setTool('tree')} className={`p-1.5 md:p-2 rounded-lg flex flex-col items-center border ${tool === 'tree' ? 'bg-blue-100 border-blue-400' : 'bg-white border-slate-200'}`}>
-                                            <span className="text-base md:text-lg mb-0.5 md:mb-1">🌳</span> <span className="text-[8px] md:text-[10px] hidden md:block">Pohon</span>
-                                        </button>
-                                        <button onClick={() => setTool('house')} className={`p-1.5 md:p-2 rounded-lg flex flex-col items-center border ${tool === 'house' ? 'bg-blue-100 border-blue-400' : 'bg-white border-slate-200'}`}>
-                                            <span className="text-base md:text-lg mb-0.5 md:mb-1">🏠</span> <span className="text-[8px] md:text-[10px] hidden md:block">Rumah</span>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <button onClick={handleFinish} className="mt-auto w-full bg-blue-600 text-white font-bold py-3 md:py-4 rounded-xl hover:bg-blue-700 shadow-md text-sm md:text-base">
-                                    Kumpulkan
+                            <h1 className="text-2xl md:text-3xl font-black text-slate-800 mb-2">Petualangan Seni</h1>
+                            <p className="text-slate-500 mb-8 font-medium">Kelas 5 SD Negeri 2 Sendang Ayu</p>
+                            
+                            <form onSubmit={handleStartPlaying}>
+                                <input 
+                                    type="text" 
+                                    placeholder="Siapa namamu?" 
+                                    value={nameInput} 
+                                    onChange={(e) => setNameInput(e.target.value)}
+                                    className="w-full bg-slate-50 border-2 border-slate-200 text-slate-800 px-4 py-3 rounded-xl mb-6 font-bold text-center focus:border-blue-500 focus:bg-white outline-none transition-colors"
+                                />
+                                <button type="submit" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition-colors active:scale-95 shadow-md">
+                                    Mulai Bermain
                                 </button>
-                            </div>
+                            </form>
+                        </div>
+                    );
+                }
+
+                if (gameState.currentLevel !== null) {
+                    return (
+                        <div className="mt-6 md:mt-10">
+                            <button onClick={() => setGameState({...gameState, currentLevel: null})} className="mb-6 ml-2 text-blue-100 hover:text-white transition-colors bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg font-bold backdrop-blur-sm">
+                                <i className="fa-solid fa-arrow-left mr-2"></i> Kembali ke Peta
+                            </button>
+                            {gameState.currentLevel === 1 && <Level1 />}
+                            {gameState.currentLevel === 2 && <Level2 />}
+                            {gameState.currentLevel === 3 && <Level3 />}
+                            {gameState.currentLevel === 4 && <Level4 />}
+                            {gameState.currentLevel === 5 && <Level5 />}
+                            {gameState.currentLevel === 6 && <Level6 />}
+                            {gameState.currentLevel === 7 && <Level7 />}
+                            {gameState.currentLevel === 8 && <Level8 />}
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className="max-w-4xl mx-auto mt-6 md:mt-10">
+                        <div className="text-center mb-10">
+                            <h2 className="text-2xl md:text-4xl font-black text-white mb-2 tracking-wide drop-shadow-md">PETA MISI</h2>
+                            <p className="text-blue-200">Selesaikan misi untuk membuka level selanjutnya!</p>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                            {levels.map((level) => {
+                                const isUnlocked = level.id <= gameState.unlockedLevel;
+                                const isCompleted = level.id < gameState.unlockedLevel;
+
+                                return (
+                                    <button 
+                                        key={level.id} 
+                                        onClick={() => isUnlocked && startGame(level.id)}
+                                        className={`relative p-5 rounded-3xl flex flex-col items-center text-center transition-all duration-300
+                                            ${isUnlocked 
+                                                ? 'bg-white hover:bg-blue-50 cursor-pointer shadow-lg hover:-translate-y-2' 
+                                                : 'bg-white/10 backdrop-blur-md cursor-not-allowed border border-white/20'}`}
+                                    >
+                                        <div className={`w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-3 text-2xl
+                                            ${isCompleted ? 'bg-green-100 text-green-600' : 
+                                              isUnlocked ? 'bg-blue-100 text-blue-600 shadow-inner' : 'bg-slate-800 text-slate-500'}`}>
+                                            <i className={isUnlocked ? level.icon : 'fa-solid fa-lock'}></i>
+                                        </div>
+                                        <h3 className={`font-bold text-sm md:text-base ${isUnlocked ? 'text-slate-800' : 'text-slate-400'}`}>
+                                            {level.title}
+                                        </h3>
+                                        <p className={`text-xs mt-1 ${isUnlocked ? 'text-slate-500' : 'text-slate-500'}`}>
+                                            {level.subtitle}
+                                        </p>
+                                        {isCompleted && (
+                                            <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-500 text-white rounded-full border-4 border-white flex items-center justify-center text-sm shadow-sm">
+                                                <i className="fa-solid fa-check"></i>
+                                            </div>
+                                        )}
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
                 );
             };
 
-            const Results = () => (
-                <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100 max-w-3xl mx-auto w-full text-center">
-                    <h2 className="text-2xl md:text-3xl font-black text-blue-900 mb-2">MISI SELESAI! 🎉</h2>
-                    <p className="text-sm md:text-base text-slate-600 mb-6 md:mb-8">Hebat {gameState.studentName}! Kamu sudah mengenali unsur dan prinsip seni rupa.</p>
-                    
-                    {gameState.savedArtwork && (
-                        <div className="mb-6 md:mb-8 border-2 md:border-4 border-slate-200 rounded-xl overflow-hidden shadow-md max-w-xl mx-auto">
-                            <img src={gameState.savedArtwork} alt="Karya Siswa" className="w-full h-auto block" />
+            return (
+                <div className="min-h-screen bg-cross-pattern pb-20 relative">
+                    {/* Header Top Bar */}
+                    <div className="bg-white/90 backdrop-blur-md shadow-sm p-4 sticky top-0 z-40 flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white">
+                                <i className="fa-solid fa-palette text-sm"></i>
+                            </div>
+                            <h1 className="font-bold text-slate-800 text-base hidden md:block tracking-tight">Seni Rupa Kelas 5</h1>
                         </div>
-                    )}
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
-                        <div className="bg-blue-50 p-3 md:p-4 rounded-xl">
-                            <p className="text-xs md:text-sm text-blue-600 font-bold">Skor Total</p>
-                            <p className="text-2xl md:text-3xl font-black text-blue-800">{gameState.score}</p>
-                        </div>
-                        <div className="bg-green-50 p-3 md:p-4 rounded-xl">
-                            <p className="text-xs md:text-sm text-green-600 font-bold">Unsur</p>
-                            <p className="text-sm md:text-xl font-bold text-green-800 mt-1">✅</p>
-                        </div>
-                        <div className="bg-purple-50 p-3 md:p-4 rounded-xl">
-                            <p className="text-xs md:text-sm text-purple-600 font-bold">Prinsip</p>
-                            <p className="text-sm md:text-xl font-bold text-purple-800 mt-1">✅</p>
-                        </div>
-                        <div className="bg-orange-50 p-3 md:p-4 rounded-xl">
-                            <p className="text-xs md:text-sm text-orange-600 font-bold">Penerapan</p>
-                            <p className="text-sm md:text-xl font-bold text-orange-800 mt-1">✅</p>
-                        </div>
-                    </div>
-                    
-                    <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-center">
-                        <a href={gameState.savedArtwork} download={`Karya_Seni_${gameState.studentName.replace(/\s+/g, '_')}_Kelas5.jpg`}
-                            className="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 flex items-center justify-center transition-colors text-sm md:text-base">
-                            <i className="fa-solid fa-download mr-2"></i> Download (JPG)
-                        </a>
-                        <button onClick={() => window.location.reload()} className="bg-slate-200 text-slate-700 font-bold py-3 px-6 rounded-xl hover:bg-slate-300 flex items-center justify-center transition-colors text-sm md:text-base">
-                            <i className="fa-solid fa-rotate-left mr-2"></i> Main Lagi
+                        
+                        {gameState.isPlaying && (
+                            <div className="flex items-center gap-3 md:gap-6">
+                                <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
+                                    <span className="text-slate-500 text-xs md:text-sm font-semibold">
+                                        <i className="fa-solid fa-user mr-1 text-slate-400"></i> {gameState.studentName}
+                                    </span>
+                                </div>
+                                <div className="bg-yellow-100 text-yellow-700 px-3 py-1.5 md:px-4 md:py-2 rounded-full font-black text-sm md:text-base border border-yellow-200 shadow-sm flex items-center gap-2">
+                                    <i className="fa-solid fa-star text-yellow-500"></i>
+                                    {gameState.score}
+                                </div>
+                            </div>
+                        )}
+                        
+                        <button onClick={toggleFullScreen} className="text-slate-400 hover:text-slate-700 p-2 transition-colors">
+                            <i className="fa-solid fa-expand text-lg"></i>
                         </button>
                     </div>
-                </div>
-            );
 
-            const renderCurrentView = () => {
-                switch (gameState.currentLevel) {
-                    case 1: return <Level1 />;
-                    case 2: return <Level2 />;
-                    case 3: return <Level3 />;
-                    case 4: return <Level4 />;
-                    case 5: return <Level5 />;
-                    case 6: return <Level6 />;
-                    case 7: return <Level7 />;
-                    case 8: return <Level8 />;
-                    case 9: return <Results />;
-                    default: return null;
-                }
-            };
+                    {/* Toast Notification */}
+                    <div className={`fixed top-24 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-full text-white font-bold shadow-xl transition-all duration-300 ${toast.show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'} ${toast.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}>
+                        <i className={`fa-solid ${toast.type === 'success' ? 'fa-circle-check' : 'fa-circle-exclamation'} mr-2`}></i>
+                        {toast.message}
+                    </div>
 
-            return (
-                <div className="min-h-screen flex flex-col bg-slate-50">
-                    {toast.show && (
-                        <div className={`fixed top-4 right-4 md:right-8 z-50 px-4 py-3 md:px-6 md:py-4 rounded-xl shadow-lg font-bold flex items-center justify-between min-w-[200px] md:min-w-[250px] animate-bounce text-sm md:text-base
-                            ${toast.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`}>
-                            <span>{toast.message}</span>
-                            <button onClick={() => setToast({ show: false, message: '', type: 'success' })} className="ml-4 opacity-80 hover:opacity-100">
-                                <i className="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                    )}
-
-                    {!gameState.isPlaying ? (
-                        <>
-                            {!showForm ? (
-                                /* HALAMAN AWAL (LANDING) */
-                                <div className="flex-1 bg-cross-pattern flex flex-col items-center justify-center p-4 min-h-[100dvh] text-white relative">
-                                    <div className="flex flex-col items-center z-10 w-full max-w-2xl mt-[-20px] md:mt-[-50px]">
-                                        
-                                        <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] rounded-full p-1 bg-gradient-to-tr from-green-400 to-green-300 shadow-xl mb-4 md:mb-6 relative">
-                                            <img src="lehan.png" alt="Profile" className="w-full h-full object-cover rounded-full border-2 border-white" />
-                                        </div>
-                                        
-                                        <h1 className="text-2xl md:text-5xl font-black text-center mb-3 md:mb-4 tracking-tight drop-shadow-md px-2 leading-tight">
-                                            UNSUR SENI RUPA
-                                        </h1>
-                                        
-                                        <h2 className="text-xl md:text-2xl font-bold text-[#ff8c00] mb-2 drop-shadow-sm tracking-widest">KELAS 5</h2>
-                                        
-                                        <h3 className="text-lg md:text-xl font-bold mb-6 md:mb-8 tracking-wide drop-shadow-sm text-center">SD NEGERI 2 SENDANG AYU</h3>
-                                        
-                                        <div className="bg-white/10 border border-white/20 px-4 md:px-8 py-2 md:py-3 rounded-full mb-6 md:mb-8 backdrop-blur-sm shadow-inner text-xs md:text-base font-semibold text-center w-max max-w-[90%] truncate">
-                                            Pertemuan 1 : Unsur Dasar Seni Rupa
-                                        </div>
-                                        
-                                        <button onClick={() => setShowForm(true)} 
-                                            className="bg-[#ff7a00] hover:bg-[#e06b00] text-white font-bold text-lg md:text-xl py-3 md:py-4 px-8 md:px-12 rounded-full shadow-lg transition-transform hover:scale-105 flex items-center justify-center w-[80%] md:w-auto">
-                                            MULAI BERMAIN <i className="fa-solid fa-arrow-right ml-2 md:ml-3 text-base md:text-lg"></i>
-                                        </button>
-                                        
-                                    </div>
-
-                                    <button onClick={toggleFullScreen} className="absolute bottom-6 md:bottom-8 text-xs md:text-sm text-white/70 hover:text-white flex items-center font-semibold transition-colors">
-                                        <i className="fa-solid fa-expand mr-2"></i> Layar Penuh
-                                    </button>
-                                </div>
-                            ) : (
-                                /* FORM DATA DIRI */
-                                <div className="flex-1 bg-slate-50 flex flex-col items-center justify-center p-4 min-h-[100dvh] relative">
-                                    <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] w-full max-w-md overflow-hidden transform transition-all">
-                                        <div className="h-2 md:h-3 bg-[#1e3a8a] w-full"></div>
-                                        <div className="p-6 md:p-8">
-                                            <h2 className="text-lg md:text-xl font-bold text-[#1e3a8a] text-center mb-6 md:mb-8">Isi Data Diri Dulu Yuk!</h2>
-                                            
-                                            <form onSubmit={handleStartPlaying}>
-                                                <div className="mb-4 md:mb-5">
-                                                    <label className="block text-[12px] md:text-[13px] font-bold text-slate-700 mb-1.5 md:mb-2">Nama Lengkap</label>
-                                                    <input type="text" value={nameInput} onChange={(e) => setNameInput(e.target.value)}
-                                                        className="w-full p-2.5 md:p-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#1e3a8a] focus:border-transparent outline-none text-slate-700 transition-shadow text-sm md:text-base"
-                                                        placeholder="Masukkan namamu..." required />
-                                                </div>
-                                                <div className="mb-6 md:mb-8">
-                                                    <label className="block text-[12px] md:text-[13px] font-bold text-slate-700 mb-1.5 md:mb-2">Kelas</label>
-                                                    <input type="text" value={classInput} onChange={(e) => setClassInput(e.target.value)}
-                                                        className="w-full p-2.5 md:p-3 border border-slate-200 rounded-xl outline-none bg-slate-50 text-slate-600 text-sm md:text-base" readOnly />
-                                                </div>
-                                                <button type="submit" className="w-full bg-[#243c7c] text-white font-bold py-3 md:py-4 rounded-xl hover:bg-[#1a2d5e] transition-colors flex items-center justify-center text-sm md:text-[15px] shadow-md">
-                                                    LANJUT KE PERMAINAN <i className="fa-solid fa-play ml-2 md:ml-3 text-xs md:text-sm"></i>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <button onClick={() => setShowForm(false)} className="absolute top-4 left-4 md:top-6 md:left-6 text-slate-400 hover:text-slate-600 transition-colors p-2">
-                                        <i className="fa-solid fa-arrow-left text-lg md:text-xl"></i>
-                                    </button>
-                                </div>
-                            )}
-                        </>
-                    ) : (
-                        <div className="flex-1 flex flex-col">
-                            <header className="bg-white shadow-sm py-3 px-4 md:py-4 md:px-6 flex justify-between items-center sticky top-0 z-40">
-                                <div>
-                                    <h1 className="font-black text-lg md:text-xl text-blue-900 uppercase tracking-tight">Peta Misi</h1>
-                                    <p className="text-xs md:text-sm text-slate-500 font-medium">Halo, <span className="truncate inline-block max-w-[100px] md:max-w-xs align-bottom">{gameState.studentName}</span>!</p>
-                                </div>
-                                <div className="flex gap-2 md:gap-3">
-                                    <div className="bg-red-50 text-red-500 px-2 py-1 md:px-3 md:py-1 rounded-lg font-bold flex items-center text-xs md:text-sm border border-red-100 shadow-sm">
-                                        ❤️ {gameState.lives}
-                                    </div>
-                                    <div className="bg-yellow-50 text-yellow-600 px-2 py-1 md:px-3 md:py-1 rounded-lg font-bold flex items-center text-xs md:text-sm border border-yellow-100 shadow-sm">
-                                        ⭐ {gameState.score}
-                                    </div>
-                                </div>
-                            </header>
-
-                            <main className="flex-1 p-3 md:p-8 flex justify-center items-start">
-                                {!gameState.currentLevel ? (
-                                    <div className="max-w-4xl w-full">
-                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-                                            {levels.map((level) => {
-                                                const isLocked = level.id > gameState.unlockedLevel;
-                                                const isActive = level.id === gameState.unlockedLevel;
-
-                                                return (
-                                                    <button key={level.id} onClick={() => !isLocked && startGame(level.id)} disabled={isLocked}
-                                                        className={`relative p-3 md:p-4 rounded-2xl flex flex-col items-center justify-center border-2 transition-all duration-300 min-h-[120px] md:min-h-[140px]
-                                                            ${isActive ? 'border-green-400 bg-green-50 shadow-md transform md:scale-105' : 
-                                                            isLocked ? 'border-slate-200 bg-white/80 opacity-80' : 
-                                                            'border-white bg-white hover:border-blue-200 hover:bg-blue-50 hover:shadow-md active:scale-95'}`}>
-                                                        
-                                                        {isLocked && (
-                                                            <div className="absolute top-2 right-2 md:top-3 md:right-3 text-slate-400 opacity-60">
-                                                                <i className="fa-solid fa-lock text-xs md:text-sm"></i>
-                                                            </div>
-                                                        )}
-                                                        
-                                                        <div className={`w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mb-2 md:mb-3 transition-colors
-                                                            ${isActive ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-500'}`}>
-                                                            <i className={`${level.icon} text-xl md:text-2xl ${isLocked ? 'opacity-50 saturate-50' : ''}`}></i>
-                                                        </div>
-                                                        <span className={`text-xs md:text-base font-bold ${isActive ? 'text-green-700' : 'text-slate-700'} text-center`}>
-                                                            {level.title}
-                                                        </span>
-                                                        <span className={`text-[10px] md:text-xs mt-1 ${isActive ? 'text-green-600' : 'text-slate-500'} text-center`}>
-                                                            {level.subtitle}
-                                                        </span>
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="w-full flex flex-col items-center animate-fade-in pt-2 md:pt-4 pb-16 md:pb-0">
-                                        <button onClick={() => setGameState({...gameState, currentLevel: null})} className="self-start mb-4 text-slate-500 hover:text-slate-700 font-medium text-sm flex items-center bg-white px-3 py-1.5 rounded-lg border border-slate-200 md:hidden">
-                                            <i className="fa-solid fa-arrow-left mr-2"></i> Peta
-                                        </button>
-                                        {renderCurrentView()}
-                                    </div>
-                                )}
-                            </main>
-                        </div>
-                    )}
-                    
-                    {gameState.isPlaying && (
-                        <footer className="bg-slate-900 text-slate-400 text-center py-3 md:py-4 text-xs md:text-sm font-medium mt-auto hidden md:block">
-                            © 2026 - Created By Pak Lehan
-                        </footer>
-                    )}
+                    {/* Main Content Area */}
+                    <div className="container mx-auto px-4">
+                        {renderContent()}
+                    </div>
                 </div>
             );
         }
